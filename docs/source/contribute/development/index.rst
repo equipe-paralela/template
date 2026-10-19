@@ -52,8 +52,8 @@ The workflow to be follow when suggesting modifications designed with `Mermaid <
 
     <p>With local side operations in <span style="color:#77ff77"><b>green</b></span> and remote side operations in <span style="color:#7777ff"><b>blue</b></span>.</p>
 
-Branchs
--------
+Branches
+--------
 
 Naming
 ^^^^^^
