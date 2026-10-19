@@ -5,4 +5,3 @@ Each tool handles one stage, from extracting information out of the source code 
 
 #. **Sphinx** creates the documentation.
 #. **Read the Docs** hosts the documentation online.
-
