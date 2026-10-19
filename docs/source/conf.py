@@ -7,9 +7,9 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'template-project'
-copyright = '2026, Equipe Paralela'
+copyright = '2026-%Y, Equipe Paralela'
 author = 'template-author'
-release = 'v1.8.0'
+release = 'v1.0.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -18,7 +18,6 @@ extensions = [
     'sphinx.ext.duration',
     "sphinx.ext.intersphinx",
     'sphinx_design',
-    'sphinx_simplepdf',
     'sphinxcontrib.mermaid',
 ]
 

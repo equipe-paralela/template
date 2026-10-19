@@ -1,5 +1,5 @@
-Sumo Firmware
-=============
+template-project
+================
 
 .. toctree::
    :maxdepth: 2
