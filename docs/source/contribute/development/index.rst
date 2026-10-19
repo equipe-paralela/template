@@ -131,6 +131,9 @@ At least one of the following accepted labels **must** be included:
         :language: yaml
         :linenos:
 
+.. tip::
+    Labels are automatically synchronized in the repository by the :ref:`sync-labels-workflow` workflow if this convention is followed.
+
 Types
 ^^^^^
 
@@ -161,4 +164,4 @@ Each working branch should be linked to a single Pull Request where it's title *
     If disrespected, `semantic-release <https://github.com/semantic-release/semantic-release>`_ will disconsider the Pull Request and incorrectly determine the next release version.
 
 .. tip::
-    Labels are automatically added by the :ref:`cicd-workflow` workflow if this convention is followed.
+    Labels are automatically added by the :ref:`pull-request-workflow` workflow if this convention is followed.
