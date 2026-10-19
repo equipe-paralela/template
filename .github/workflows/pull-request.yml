@@ -13,9 +13,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  labeler:
+  add-labels:
     if: github.event.action != 'edited'
-    name: Labels Pull Request
+    name: Add Labels
     permissions:
       contents: read
       pull-requests: write
@@ -23,37 +23,39 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 #v7.0.1
 
-      # Label Based on Modified Files
-      - name: Label Based on Modified Files
+      - name: Based on modified files
         uses: actions/labeler@bf12e9b00b37c5c0ca2b87b79b2daf7891dbda13 #v7.0.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
-      # Label Based on Branch Name
-      - uses: actions-ecosystem/action-add-labels@18f1af5e3544586314bbe15c0273249c770b2daf #v1
+      - name: Based on branch name for bugs
+        uses: actions-ecosystem/action-add-labels@18f1af5e3544586314bbe15c0273249c770b2daf #v1
         if: startsWith(github.event.pull_request.head.ref, 'fix')
         with:
           labels: bug
 
-      - uses: actions-ecosystem/action-add-labels@18f1af5e3544586314bbe15c0273249c770b2daf #v1
+      - name: Based on branch name for documentation
+        uses: actions-ecosystem/action-add-labels@18f1af5e3544586314bbe15c0273249c770b2daf #v1
         if: startsWith(github.event.pull_request.head.ref, 'doc')
         with:
           labels: documentation
 
-      - uses: actions-ecosystem/action-add-labels@18f1af5e3544586314bbe15c0273249c770b2daf #v1
+      - name: Based on branch name for enhancement
+        uses: actions-ecosystem/action-add-labels@18f1af5e3544586314bbe15c0273249c770b2daf #v1
         if: startsWith(github.event.pull_request.head.ref, 'feat')
         with:
           labels: enhancement
 
-      - uses: actions-ecosystem/action-add-labels@18f1af5e3544586314bbe15c0273249c770b2daf #v1
+      - name: Based on branch name with maintenance
+        uses: actions-ecosystem/action-add-labels@18f1af5e3544586314bbe15c0273249c770b2daf #v1
         if: |
           startsWith(github.event.pull_request.head.ref, 'ci') ||
           startsWith(github.event.pull_request.head.ref, 'maint')
         with:
           labels: maintenance
 
-  pull-request-title:
-    name: Assert Pull Request Name
+  assert-name:
+    name: Assert Name
     runs-on: ubuntu-latest
     permissions:
       pull-requests: read
@@ -65,12 +67,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  commenter:
+  suggestions:
     if: github.event.action == 'opened'
-    name: Comment Labels Suggestions
+    name: Labels Suggestions
     needs:
-      - labeler
-      - pull-request-title
+      - add-labels
+      - assert-name
     permissions:
       contents: read
       pull-requests: write
@@ -87,7 +89,7 @@ jobs:
         echo "Labels: '$labels'"
         echo "labels=$labels" >> "$GITHUB_OUTPUT"
 
-    - name: Suggest Labels
+    - name: Possible Labels
       uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 #v5.0.0
 
       # Execute only when no labels have been applied to the pull request
