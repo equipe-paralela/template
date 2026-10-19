@@ -11,4 +11,3 @@ Contributions Guide
    development/index
    documentation/index
    workflows/index
-
