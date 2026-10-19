@@ -118,7 +118,7 @@ jobs:
       with:
         issue-number: ${{ github.event.pull_request.number }}
         body: |
-          Please add one of the following labels:
+          Please add at least one of the following labels:
           - [bug](https://github.com/${{ github.repository }}/pulls?q=label%3Abug+)
           - [dependencies](https://github.com/${{ github.repository }}/pulls?q=label%3Adependencies+)
           - [documentation](https://github.com/${{ github.repository }}/pulls?q=label%3Adocumentation+)
