@@ -73,39 +73,6 @@ jobs:
           labels: maintenance
 
 
-  commenter:
-    if: github.event.action == 'opened' || github.event.action == 'reopened'
-    name: Comment Labels Suggestions
-    needs: [ labeler ]
-    permissions:
-      contents: read
-      pull-requests: write
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Display Labels
-      run: |
-        echo '${{ toJSON(github.event.pull_request.labels.*.name) }}'
-
-    - name: Suggest Labels
-      uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 #v5.0.0
-
-      # Execute only when no labels have been applied to the pull request
-      if: toJSON(github.event.pull_request.labels.*.name) == '[]'
-      with:
-        issue-number: ${{ github.event.pull_request.number }}
-        body: |
-          Please add one of the following labels:
-          - [bug](https://github.com/${{ github.repository }}/pulls?q=label%3Abug+)
-          - [dependencies](https://github.com/${{ github.repository }}/pulls?q=label%3Adependencies+)
-          - [documentation](https://github.com/${{ github.repository }}/pulls?q=label%3Adocumentation+)
-          - [enhancement](https://github.com/${{ github.repository }}/pulls?q=label%3Aenhancement+)
-          - [good first issue](https://github.com/${{ github.repository }}/pulls?q=label%3Agood+first+issue+)
-          - [maintenance](https://github.com/${{ github.repository }}/pulls?q=label%3Amaintenance+)
-          - [security](https://github.com/${{ github.repository }}/pulls?q=label%3Asecurity+)
-          - [testing](https://github.com/${{ github.repository }}/pulls?q=label%3Atesting+)
-
-
   pull-request-title:
     if: github.event_name == 'pull_request'
     name: Assert Pull Request Name
@@ -119,3 +86,44 @@ jobs:
       - uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50  #v6.1.1
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+  commenter:
+    if: github.event.action == 'opened' || github.event.action == 'reopened'
+    name: Comment Labels Suggestions
+    needs:
+      - labeler
+      - pull-request-title
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Display Labels
+      id: labels
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+      run: |
+        labels=$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --json labels --jq '[.labels[].name] | join(",")')
+        echo "Labels: '$labels'"
+        echo "labels=$labels" >> "$GITHUB_OUTPUT"
+
+    - name: Suggest Labels
+      uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 #v5.0.0
+
+      # Execute only when no labels have been applied to the pull request
+      if: steps.labels.outputs.labels == ''
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        body: |
+          Please add one of the following labels:
+          - [bug](https://github.com/${{ github.repository }}/pulls?q=label%3Abug+)
+          - [dependencies](https://github.com/${{ github.repository }}/pulls?q=label%3Adependencies+)
+          - [documentation](https://github.com/${{ github.repository }}/pulls?q=label%3Adocumentation+)
+          - [enhancement](https://github.com/${{ github.repository }}/pulls?q=label%3Aenhancement+)
+          - [good first issue](https://github.com/${{ github.repository }}/pulls?q=label%3Agood+first+issue+)
+          - [maintenance](https://github.com/${{ github.repository }}/pulls?q=label%3Amaintenance+)
+          - [security](https://github.com/${{ github.repository }}/pulls?q=label%3Asecurity+)
+          - [testing](https://github.com/${{ github.repository }}/pulls?q=label%3Atesting+)
