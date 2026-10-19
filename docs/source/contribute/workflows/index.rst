@@ -5,8 +5,9 @@ Workflows
    :maxdepth: 2
    :caption: Table of Contents
 
-   cicd/index
+   pull-request/index
    release/index
+   sync-labels/index
 
 How to... Verify Locally
 ------------------------
