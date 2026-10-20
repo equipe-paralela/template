@@ -8,6 +8,9 @@ The documentation requires Sphinx and Doxygen, each with its dependencies.
 Doxygen
 -------
 
+.. note::
+    **Doxygen** is only used in repositories that contain C source code. If it is not the case, skip this section.
+
 Install Doxygen:
 
 .. code-block:: bash

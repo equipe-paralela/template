@@ -30,4 +30,4 @@ When It Does
     :start-after: name:
     :end-before: concurrency:
 
-This workflow runs whenever there is a push to main in the .
+This workflow runs whenever there is a push to main in the ``labels.yml`` file.

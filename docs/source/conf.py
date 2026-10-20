@@ -15,9 +15,9 @@ release = 'v1.0.0'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
+    'sphinx_design',
     'sphinx.ext.duration',
     "sphinx.ext.intersphinx",
-    'sphinx_design',
     'sphinxcontrib.mermaid',
 ]
 
