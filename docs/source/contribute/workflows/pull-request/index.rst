@@ -13,7 +13,7 @@ Pull Request
 What It Does
 ------------
 
-This workflow verifies if Pull Request :ref:`commit-messages` and Name respects the required structure and adds labels based on the branch name and files modified.
+This workflow verifies if Pull Request name respects the required structure and adds labels based on the branch name and files modified.
 
 ..  tip::
     If no label is added, a comment suggesting labels will be added.
